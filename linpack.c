@@ -842,24 +842,27 @@ void linpack_bench(void)
     size_t  malloc_arg;
     struct timeval s_tv, e_tv;
     
-    arsize = 1000;
+    arsize = 600;
     arsize2d = (long)arsize*(long)arsize;
     memreq=arsize2d*sizeof(REAL)+(long)arsize*sizeof(REAL)+(long)arsize*sizeof(int);
-    //printf("Memory required:  %ldK.\n",(memreq+512L)>>10);
+    
     malloc_arg=(size_t)memreq;
     if (malloc_arg!=memreq || (mempool=malloc(malloc_arg))==NULL)
-        {
+    {
         printf("Not enough memory available for given array size.\n\n");
         exit(1);
-        }
+    }
+
     gettimeofday(&s_tv, NULL);          
     printf("#3 LINPACK bench, %s precision, Machine precision:  %d digits Array size  %d X %d.\n",PREC, BASE10DIG, arsize,arsize);
     printf("    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS\n");
-    printf("  ----------------------------------------------------\n");
+    printf("    -----------------------------------------------\n");
     nreps=1;
     while (linpack(nreps,arsize)<10.)
+    {
         nreps*=2;
+    }
     free(mempool);
     gettimeofday(&e_tv, NULL);
-    printf("  -- Linpack benchin [ %4.4lf ] seconds\n",(float) ((e_tv.tv_sec - s_tv.tv_sec)*1000000L + e_tv.tv_usec - s_tv.tv_usec) / 1000000L);
+    printf("  -- Linpack bench in [ %4.4lf ] seconds\n",(float) ((e_tv.tv_sec - s_tv.tv_sec)*1000000L + e_tv.tv_usec - s_tv.tv_usec) / 1000000L);
 }

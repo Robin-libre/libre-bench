@@ -12,6 +12,7 @@ default:
 	@echo ""
 	@echo "Welcome to Libre bench. Please choose one of the following 'make' targets:"
 	@echo ""
+	@echo "    mac:   mac"
 	@echo "    gcc:   gcc"
 	@echo "    clang: clang"
 	@echo "    unix:  hpux hpux9"
@@ -21,7 +22,8 @@ default:
 	@echo ""
 
 
-GCC_CFLAGS = -s -Wall -O3 -fomit-frame-pointer -fopenmp -mcmodel=large
+GCC_CFLAGS = -Wall -O3 -fopenmp -mcmodel=large
+MAC_CFLAGS = -Wall -O3 
 
 
 #
@@ -34,6 +36,8 @@ cc:
 	cc $(CPPFLAGS) -o $(PROGRAM) $(SOURCES) -lm
 clang:  
 	clang $(CPPFLAGS) $(GCC_CFLAGS) -o $(PROGRAM) $(SOURCES) -lm
+mac:
+	clang $(CPPFLAGS) $(MAC_CFLAGS) -o $(PROGRAM) $(SOURCES) -lm
 #
 # UNIX
 #

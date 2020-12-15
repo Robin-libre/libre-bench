@@ -781,7 +781,7 @@ static BLOWFISH_RC _BLOWFISH_SelfTest ( )
 
 	if ( omp_get_max_threads ( ) > 1 )
 	{
-		printf ( "#5 Parallelised blowfish bench (using %d threads for ~%d seconds per mode)\n", omp_get_max_threads ( ), _THROUGHPUT_DURATION );
+		printf ( "#6 Parallelised blowfish bench (using %d threads for ~%d seconds per mode)\n", omp_get_max_threads ( ), _THROUGHPUT_DURATION );
 
 		for ( i = 0; i < sizeof ( _BLOWFISH_ThroughputTv ) / sizeof ( _BLOWFISH_ThroughputTv [ 0 ] ); i++ )
 		{
@@ -806,7 +806,7 @@ static BLOWFISH_RC _BLOWFISH_SelfTest ( )
 
 	/* Perform serialised throughput tests */ 
 
-	printf ( "#6 Serialised blowfish bench (using 1 thread for ~%d seconds per mode)\n", _THROUGHPUT_DURATION );
+	printf ( "#7 Serialised blowfish bench (using 1 thread for ~%d seconds per mode)\n", _THROUGHPUT_DURATION );
 	gettimeofday(&s_tv, NULL);
 
 	for ( i = 0; i < sizeof ( _BLOWFISH_ThroughputTv ) / sizeof ( _BLOWFISH_ThroughputTv [ 0 ] ); i++ )
@@ -923,15 +923,39 @@ void lzo_bench(void)
     }       
     else
     {
-        /* this should NEVER happen */
         printf("internal error - decompression failed: %d\n", r);
     }
 }
 
 void blowfish_bench(void)
 {
-	/* Perform all self tests */ 
 	_BLOWFISH_SelfTest ( );
+
+}
+
+void superpi_bench(void)
+{
+    long loops = 3000000000L;
+	double a = 1.0f;
+	double b = 1.0f / sqrt(2);
+	double t = 1.0f / 4.0f;
+	double p = 1.0f;
+	struct timeval s_tv, e_tv;
+
+	gettimeofday(&s_tv, NULL);
+	for (long i = 0; i < loops; i++)
+	{
+		double x = (a + b) / 2;
+		double y = sqrt(a * b);
+		double w = t - p * pow(a - x, 2);
+		double z = 2 * p;
+		a = x;
+		b = y;
+		t = w;
+		p = z;
+	}	
+	gettimeofday(&e_tv, NULL);
+	printf("#5 Superpi bench in [ %4.4lf ] seconds\n", (float) ((e_tv.tv_sec - s_tv.tv_sec)*1000000L + e_tv.tv_usec - s_tv.tv_usec) / 1000000L);
 
 }
 
@@ -947,6 +971,8 @@ int main(void)
 	linpack_bench();
 
 	lzo_bench();
+
+	superpi_bench();
 	
 	blowfish_bench();
 

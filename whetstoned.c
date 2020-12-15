@@ -70,11 +70,6 @@ C**********************************************************************
 #define DSQRT	sqrt
 #define IF		if
 
-/* function prototypes */
-void POUT(long N, long J, long K, double X1, double X2, double X3, double X4);
-
-#define USAGE	"usage: whetdc [-c] [loops]\n"
-
 /*
 	COMMON T,T1,T2,E1(4),J,K,L
 */
@@ -91,14 +86,13 @@ long double_precision(void)
 	int J,K,L;
 
 
-	/* added for this version */
 	long loopstart;
 	long startsec, finisec;
 	float KIPS;
 	int continuous;
 	struct timeval s_tv, e_tv;
 
-	loopstart = 10000000;		/* see the note about LOOP below */
+	loopstart = 5000000;		/* see the note about LOOP below */
 	continuous = 0;
 
 	II = 1;		/* start at the first arg (temp use of II here) */
